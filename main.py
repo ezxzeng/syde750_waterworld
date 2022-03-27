@@ -1,47 +1,24 @@
 from ray import tune
-from ray.rllib.models import ModelCatalog
 from ray.tune.registry import register_env
-import supersuit as ss
-import torch
-from torch import nn
-from ray import shutdown
+from ray.rllib.env.wrappers.pettingzoo_env import PettingZooEnv
+from pettingzoo.sisl import waterworld_v3
 
-from env import env_creator
-from model import CustomVisionNetwork, get_dqn
-
+# Based on code from github.com/parametersharingmadrl/parametersharingmadrl
 
 if __name__ == "__main__":
     # RDQN - Rainbow DQN
     # ADQN - Apex DQN
-    
 
-    # env = ss.color_reduction_v0(env, mode='B')
-    # env = ss.dtype_v0(env, 'float32')
-    # env = ss.resize_v0(env, x_size=84, y_size=84)
-    # env = ss.frame_stack_v1(env, 3)
-    # env = ss.normalize_obs_v0(env, env_min=0, env_max=1)
-
-    env = env_creator()
-    register_env("battlev3", lambda _: env)
-    # model = CustomVisionNetwork(env.observation_space, env.action_space, 256, {}, "custom_vision_network")
-    ModelCatalog.register_custom_model("custom_model", CustomVisionNetwork)
+    register_env("waterworld", lambda _: PettingZooEnv(waterworld_v3.env()))
 
     tune.run(
-        "APEX",
+        "APEX_DDPG",
         stop={"episodes_total": 60000},
         checkpoint_freq=10,
         config={
             # Enviroment specific.
-            "env": "battlev3",
-            # Model
-            "model": {
-                # "dim": 13, 
-                # "conv_filters": [[32, [3, 3], 1], [32, [3, 3], 1]],
-                # "post_fcnet_hiddens": []
-                "custom_model": "custom_model"
-            },
+            "env": "waterworld",
             # General
-            "framework": "torch",
             "num_gpus": 1,
             "num_workers": 2,
             "num_envs_per_worker": 8,
