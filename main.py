@@ -9,7 +9,10 @@ if __name__ == "__main__":
     # RDQN - Rainbow DQN
     # ADQN - Apex DQN
 
-    register_env("custom_waterworld_1", lambda _: PettingZooEnv(custom_waterworld.env(n_sensors=1)))
+    register_env(
+        "custom_waterworld_1",
+        lambda _: PettingZooEnv(custom_waterworld.env(n_sensors=1)),
+    )
 
     tune.run(
         "APEX_DDPG",

@@ -19,7 +19,7 @@ parallel_env = parallel_wrapper_fn(env)
 
 class raw_env(AECEnv):
 
-    metadata = {'render.modes': ['human', "rgb_array"], 'name': 'waterworld_v3'}
+    metadata = {"render.modes": ["human", "rgb_array"], "name": "waterworld_v3"}
 
     def __init__(self, *args, **kwargs):
         super().__init__()
@@ -31,8 +31,7 @@ class raw_env(AECEnv):
         self._agent_selector = agent_selector(self.agents)
         # spaces
         self.action_spaces = dict(zip(self.agents, self.env.action_space))
-        self.observation_spaces = dict(
-            zip(self.agents, self.env.observation_space))
+        self.observation_spaces = dict(zip(self.agents, self.env.observation_space))
         self.has_reset = False
 
     def observation_space(self, agent):
