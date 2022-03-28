@@ -1,7 +1,7 @@
 from ray import tune
 from ray.tune.registry import register_env
 from ray.rllib.env.wrappers.pettingzoo_env import PettingZooEnv
-from pettingzoo.sisl import waterworld_v3
+from waterworld import waterworld as custom_waterworld
 
 # Based on code from github.com/parametersharingmadrl/parametersharingmadrl
 
@@ -9,7 +9,7 @@ if __name__ == "__main__":
     # RDQN - Rainbow DQN
     # ADQN - Apex DQN
 
-    register_env("waterworld", lambda _: PettingZooEnv(waterworld_v3.env()))
+    register_env("custom_waterworld_1", lambda _: PettingZooEnv(custom_waterworld.env(n_sensors=1)))
 
     tune.run(
         "APEX_DDPG",
@@ -17,8 +17,9 @@ if __name__ == "__main__":
         checkpoint_freq=10,
         config={
             # Enviroment specific.
-            "env": "waterworld",
+            "env": "custom_waterworld_1",
             # General
+            "framework": "torch",
             "num_gpus": 1,
             "num_workers": 2,
             "num_envs_per_worker": 8,
