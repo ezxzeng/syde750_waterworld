@@ -11,6 +11,8 @@ class PotentialFieldPolicy:
         poison_weighting=1,
         barrier_weighting=1,
         food_weighting=1,
+        randomize_angle=False,
+        spin_angle = 0
     ):
         self._n_sensors = n_sensors
         self._speed_features = speed_features
@@ -19,6 +21,8 @@ class PotentialFieldPolicy:
         self.poison_weighting = poison_weighting
         self.barrier_weighting = barrier_weighting
         self.food_weighting = food_weighting
+        self.randomize_angle = randomize_angle
+        self.spin_angle = spin_angle
 
         self._angles, self._sensor = self.get_sensors()
 
@@ -58,6 +62,14 @@ class PotentialFieldPolicy:
             poison_collided = observation[5 * self._n_sensors + 1]
             angle = observation[5 * self._n_sensors + 2]
 
+        angle_action = 0
+        if self.randomize_angle or self.spin_angle:
+            self._angles, self._sensor = self.get_sensors(first_angle=self.get_angle(angle))
+            if self.spin_angle:
+                angle_action = self.spin_angle
+            else:
+                angle_action = (np.random.random() - 0.5) * 0.1
+
         repulsion_distances = [
             obs_dist * self.obs_weighting,
             poison_dist * self.poison_weighting,
@@ -77,7 +89,9 @@ class PotentialFieldPolicy:
         force_vector = np.sum(forces[:, None] * self._sensor, axis=0)
         force_vector = self.reduce_force_vector(force_vector)
 
-        return np.append(force_vector, 0)
+        action_arr = np.append(force_vector, angle_action)
+
+        return action_arr.astype(np.float32)
 
     def get_force_sensors(self, distances, replace=(1, 0), subtract=0, set_val=None):
         force = np.zeros(self._n_sensors)
