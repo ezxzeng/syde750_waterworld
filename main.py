@@ -10,8 +10,8 @@ if __name__ == "__main__":
     # ADQN - Apex DQN
 
     register_env(
-        "custom_waterworld_1",
-        lambda _: PettingZooEnv(custom_waterworld.env(n_sensors=1)),
+        "custom_waterworld1_nocoop",
+        lambda _: PettingZooEnv(custom_waterworld.env(n_sensors=1, n_coop=1)),
     )
 
     tune.run(
@@ -20,11 +20,11 @@ if __name__ == "__main__":
         checkpoint_freq=10,
         config={
             # Enviroment specific.
-            "env": "custom_waterworld_1",
+            "env": "custom_waterworld1_nocoop",
             # General
             "framework": "torch",
             "num_gpus": 1,
-            "num_workers": 2,
+            "num_workers": 8,
             "num_envs_per_worker": 8,
             "learning_starts": 1000,
             "buffer_size": int(1e5),
