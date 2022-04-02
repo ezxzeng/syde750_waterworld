@@ -41,6 +41,7 @@ def display_results(checkpoint_path, save_path, env_name, env):
         return action
 
     reward_sum, frame_list = get_frames(env, policy_fn)
+    env.close()
 
     print(reward_sum)
     frame_list[0].save(

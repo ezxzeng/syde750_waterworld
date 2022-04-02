@@ -12,7 +12,7 @@ class PotentialFieldPolicy:
         barrier_weighting=1,
         food_weighting=1,
         randomize_angle=False,
-        spin_angle = 0
+        spin_angle=0,
     ):
         self._n_sensors = n_sensors
         self._speed_features = speed_features
@@ -64,7 +64,9 @@ class PotentialFieldPolicy:
 
         angle_action = 0
         if self.randomize_angle or self.spin_angle:
-            self._angles, self._sensor = self.get_sensors(first_angle=self.get_angle(angle))
+            self._angles, self._sensor = self.get_sensors(
+                first_angle=self.get_angle(angle)
+            )
             if self.spin_angle:
                 angle_action = self.spin_angle
             else:

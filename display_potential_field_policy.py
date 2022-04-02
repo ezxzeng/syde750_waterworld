@@ -16,6 +16,7 @@ if __name__ == "__main__":
     env = custom_waterworld(n_sensors=n_sensors, n_coop=1)
     policy = PotentialFieldPolicy().get_movement_vector
     reward_sum, frame_list = get_frames(env, policy)
+    env.close()
     print(reward_sum)
     frame_list[0].save(
         "potential_field.gif",
