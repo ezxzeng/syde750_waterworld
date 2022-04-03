@@ -7,20 +7,20 @@ class PotentialFieldPolicy:
         n_sensors=20,
         speed_features=True,
         pursuer_max_accel=0.01,
-        obs_weighting=1,
-        poison_weighting=1,
-        barrier_weighting=1,
-        food_weighting=1,
+        obs_weight=1,
+        poison_weight=1,
+        barrier_weight=1,
+        food_weight=1,
         randomize_angle=False,
         spin_angle=0,
     ):
         self._n_sensors = n_sensors
         self._speed_features = speed_features
         self._pursuer_max_accel = pursuer_max_accel
-        self.obs_weighting = obs_weighting
-        self.poison_weighting = poison_weighting
-        self.barrier_weighting = barrier_weighting
-        self.food_weighting = food_weighting
+        self.obs_weight = obs_weight
+        self.poison_weight = poison_weight
+        self.barrier_weight = barrier_weight
+        self.food_weight = food_weight
         self.randomize_angle = randomize_angle
         self.spin_angle = spin_angle
 
@@ -73,11 +73,11 @@ class PotentialFieldPolicy:
                 angle_action = (np.random.random() - 0.5) * 0.1
 
         repulsion_distances = [
-            obs_dist * self.obs_weighting,
-            poison_dist * self.poison_weighting,
-            barr_dist * self.barrier_weighting,
+            obs_dist * self.obs_weight,
+            poison_dist * self.poison_weight,
+            barr_dist * self.barrier_weight,
         ]
-        attraction_distances = [food_dist * self.food_weighting]
+        attraction_distances = [food_dist * self.food_weight]
         max_repulsion_val = np.max(np.concatenate(repulsion_distances))
         repulsion = self.get_force_sensors(
             repulsion_distances,

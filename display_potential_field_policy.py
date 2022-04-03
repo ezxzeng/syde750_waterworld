@@ -1,13 +1,5 @@
-from pettingzoo.sisl import waterworld_v3
-
 from waterworld.waterworld import env as custom_waterworld
-from agent.potential_field_policy import PotentialFieldPolicy
-
-from PIL import Image
-import numpy as np
-import os
-import argparse
-from pathlib import Path
+from potential_field.potential_field_policy import PotentialFieldPolicy
 
 from utils import get_frames
 
