@@ -133,4 +133,4 @@ dmypy.json
 
 results
 
-potential_field/*/*.json
+test_results
