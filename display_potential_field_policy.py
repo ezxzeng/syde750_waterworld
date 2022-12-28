@@ -6,7 +6,7 @@ from utils import get_frames
 if __name__ == "__main__":
     n_sensors = 20
     env = custom_waterworld(n_sensors=n_sensors, n_coop=1)
-    policy = PotentialFieldPolicy(n_sensors=n_sensors, spin_angle=0.1).get_movement_vector
+    policy = PotentialFieldPolicy(n_sensors=n_sensors).get_movement_vector
     reward_sum, frame_list = get_frames(env, policy)
     env.close()
     print(reward_sum)
